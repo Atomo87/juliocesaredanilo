@@ -1646,7 +1646,7 @@ const REELS = [
     const b = document.createElement('button');
     b.type='button'; b.className='reel'; b.dataset.index=i;
     b.setAttribute('aria-label','Assistir: '+title);
-    b.innerHTML = `<img src="assets/reels/${slug}.jpg" alt="${title}" loading="lazy">
+    b.innerHTML = `<img src="https://juliocesaredanilo.s3.sa-east-1.amazonaws.com/assets/reels/${slug}.jpg" alt="${title}" loading="lazy">
       <video muted loop playsinline preload="none" data-src="assets/reels/${slug}.mp4"></video>
       <div class="reel-shade"></div>
       <span class="reel-play">${playIcon}</span>
