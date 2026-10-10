@@ -45,37 +45,27 @@
   /* ============ CUSTOM CURSOR ============ */
   .cursor-dot{
     position:fixed;
-    width:6px;height:6px;
-    background:var(--gold);
-    border-radius:50%;
+    width:64px;height:64px;
     pointer-events:none;
     z-index:9999;
-    transform:translate(-50%,-50%);
-    transition:transform 0.1s;
-    mix-blend-mode:difference;
+    /* a ponta do braço do violão é o ponto de clique */
+    transform:translate(-7px,-4.2px);
+    transform-origin:7px 4.2px;
+    transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1),filter 0.3s;
+    filter:drop-shadow(0 0 1.5px rgba(8,6,10,0.9)) drop-shadow(0 4px 10px rgba(0,0,0,0.55));
   }
-  .cursor-ring{
-    position:fixed;
-    width:36px;height:36px;
-    border:1px solid var(--gold);
-    border-radius:50%;
-    pointer-events:none;
-    z-index:9998;
-    transform:translate(-50%,-50%);
-    transition:width 0.4s cubic-bezier(0.4,0,0.2,1),
-               height 0.4s cubic-bezier(0.4,0,0.2,1),
-               background 0.4s,
-               border-color 0.4s;
-    opacity:0.6;
-  }
-  .cursor-hover .cursor-ring{
-    width:80px;height:80px;
-    background:rgba(201,169,97,0.1);
-    border-color:var(--gold-bright);
-    opacity:1;
-  }
+  .cursor-dot svg{width:100%;height:100%;display:block}
+  .cursor-ring{display:none}
+  .cursor-dot{opacity:0}
+  .cursor-dot.on{opacity:1}
+  @media (hover:none){body{cursor:auto}.cursor-dot,.cursor-ring{display:none}}
   .cursor-hover .cursor-dot{
-    transform:translate(-50%,-50%) scale(2);
+    transform:translate(-7px,-4.2px) scale(1.2) rotate(-12deg);
+    filter:drop-shadow(0 0 1.5px rgba(8,6,10,0.95)) drop-shadow(0 6px 14px rgba(0,0,0,0.6));
+  }
+  .cursor-dot.strum svg{animation:strum 0.45s ease}
+  @keyframes strum{
+    0%{transform:rotate(0)}25%{transform:rotate(-14deg)}55%{transform:rotate(9deg)}80%{transform:rotate(-4deg)}100%{transform:rotate(0)}
   }
 
   /* ============ GRAIN OVERLAY ============ */
@@ -799,88 +789,179 @@
 
   /* ============ CTA + FORM ============ */
   .cta-section{
-    text-align:center;
+    overflow:hidden;
+    text-align:left;
     background:
-      radial-gradient(ellipse at 50% 0%,rgba(201,169,97,0.06),transparent 60%),
-      var(--dark);
+      radial-gradient(ellipse at 84% 18%,rgba(201,169,97,0.1),transparent 38%),
+      radial-gradient(ellipse at 8% 100%,rgba(201,169,97,0.055),transparent 44%),
+      linear-gradient(145deg,#0F0D12 0%,#08060A 65%);
     border-top:1px solid var(--line);
   }
-  .form-container{
-    max-width:720px;
-    margin:80px auto 0;
-    text-align:left;
+  .contact-grid{
+    display:grid;
+    grid-template-columns:minmax(0,0.9fr) minmax(0,1.1fr);
+    gap:clamp(48px,7vw,108px);
+    align-items:center;
   }
+  .contact-copy .eyebrow{justify-content:flex-start;margin-bottom:28px}
+  .contact-copy .eyebrow::before{display:none}
+  .contact-copy .section-title{
+    max-width:620px;
+    font-size:clamp(2.7rem,5.2vw,5rem);
+    line-height:0.99;
+  }
+  .contact-intro{
+    max-width:490px;
+    margin:28px 0 34px;
+    color:#A49C91;
+    font-size:1rem;
+    line-height:1.9;
+  }
+  .contact-promises{
+    display:grid;
+    gap:16px;
+    margin-bottom:34px;
+  }
+  .contact-promise{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    color:var(--cream);
+  }
+  .contact-promise-mark{
+    width:26px;height:26px;flex:0 0 26px;
+    display:grid;place-items:center;
+    border:1px solid rgba(201,169,97,0.45);
+    border-radius:50%;
+    color:var(--gold-bright);
+    font-size:0.75rem;
+  }
+  .contact-promise strong,.contact-promise span{display:block}
+  .contact-promise strong{font-size:0.88rem;font-weight:500;line-height:1.35}
+  .contact-promise span{margin-top:4px;color:var(--muted);font-size:0.8rem;line-height:1.55}
+  .contact-whatsapp{
+    display:inline-flex;
+    align-items:center;
+    gap:14px;
+    padding:14px 18px;
+    border:1px solid rgba(240,235,224,0.16);
+    background:rgba(255,255,255,0.025);
+    color:var(--cream);
+    text-decoration:none;
+    transition:border-color 0.3s,background 0.3s,transform 0.3s;
+  }
+  .contact-whatsapp:hover{border-color:rgba(201,169,97,0.55);background:rgba(201,169,97,0.06);transform:translateY(-2px)}
+  .contact-whatsapp-icon{width:38px;height:38px;display:grid;place-items:center;color:#25D366}
+  .contact-whatsapp-icon svg{width:28px;height:28px;fill:currentColor}
+  .contact-whatsapp-copy strong,.contact-whatsapp-copy span{display:block}
+  .contact-whatsapp-copy strong{font-size:0.82rem;font-weight:500}
+  .contact-whatsapp-copy span{margin-top:3px;color:var(--muted);font-size:0.73rem}
+  .contact-whatsapp-arrow{margin-left:8px;color:var(--gold);font-size:1.1rem;transition:transform 0.3s}
+  .contact-whatsapp:hover .contact-whatsapp-arrow{transform:translate(2px,-2px)}
+  .form-container{
+    max-width:none;
+    width:100%;
+    margin:0;
+    padding:clamp(28px,4vw,48px);
+    text-align:left;
+    position:relative;
+    border:1px solid rgba(201,169,97,0.2);
+    background:linear-gradient(145deg,rgba(28,24,30,0.92),rgba(14,12,16,0.96));
+    box-shadow:0 28px 90px rgba(0,0,0,0.32),inset 0 1px rgba(255,255,255,0.035);
+    backdrop-filter:blur(14px);
+  }
+  .form-container::before{
+    content:'';position:absolute;top:-1px;left:clamp(28px,4vw,48px);right:clamp(28px,4vw,48px);
+    height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.72;
+  }
+  .form-heading{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:20px;
+    padding-bottom:24px;margin-bottom:26px;border-bottom:1px solid rgba(240,235,224,0.1);
+  }
+  .form-kicker{
+    display:block;margin-bottom:9px;color:var(--gold);
+    font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;font-weight:500;
+  }
+  .form-heading h3{font-size:clamp(1.65rem,2.8vw,2.35rem);font-weight:300;color:var(--cream)}
+  .form-required-note{color:var(--muted);font-size:0.67rem;white-space:nowrap}
+  .form-required-note span{color:var(--gold)}
   .form-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:32px;
-    margin-bottom:32px;
+    gap:20px;
+    margin-bottom:20px;
   }
   .form-grid.full{grid-template-columns:1fr}
   .field{position:relative}
+  .field label{
+    display:block;margin-bottom:8px;color:#B8B0A5;
+    font-size:0.68rem;letter-spacing:0.7px;font-weight:400;
+  }
   .field input,.field select,.field textarea{
     width:100%;
-    background:transparent;
-    border:none;
-    border-bottom:1px solid rgba(240,235,224,0.15);
-    padding:18px 0 14px;
+    min-height:54px;
+    background:rgba(8,6,10,0.42);
+    border:1px solid rgba(240,235,224,0.12);
+    padding:14px 15px;
     color:var(--cream);
     font-family:'Inter',sans-serif;
-    font-size:0.95rem;
+    font-size:0.86rem;
     font-weight:300;
-    transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+    transition:border-color 0.25s,background 0.25s,box-shadow 0.25s;
     outline:none;
-    border-radius:0;
+    border-radius:2px;
     cursor:none;
   }
-  .field input::placeholder,.field textarea::placeholder{
-    color:var(--muted);
-    font-weight:300;
-  }
+  .field input::placeholder,.field textarea::placeholder{color:#756E65;font-weight:300}
   .field select{
-    color:var(--muted);
+    color:#A49C91;
     appearance:none;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23C9A961' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
     background-repeat:no-repeat;
-    background-position:right 0 center;
+    background-position:right 16px center;
+    padding-right:42px;
   }
+  .field input[type="date"]{color-scheme:dark}
+  .field textarea{min-height:112px;resize:vertical;line-height:1.65}
   .field input:focus,.field select:focus,.field textarea:focus{
-    border-bottom-color:var(--gold);
-    padding-left:12px;
+    border-color:rgba(201,169,97,0.7);
+    background:rgba(8,6,10,0.7);
+    box-shadow:0 0 0 3px rgba(201,169,97,0.08);
   }
   .field select option{
     background:var(--dark-2);
     color:var(--cream);
   }
+  .field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible{outline:2px solid transparent}
   .form-container button{
     width:100%;
-    padding:24px;
+    min-height:60px;
+    padding:18px 24px;
     background:var(--gold);
     color:var(--dark);
     border:none;
     font-family:'Inter',sans-serif;
-    font-size:0.75rem;
-    letter-spacing:4px;
+    font-size:0.72rem;
+    letter-spacing:2.4px;
     text-transform:uppercase;
     font-weight:600;
     cursor:none;
-    transition:all 0.5s cubic-bezier(0.4,0,0.2,1);
-    margin-top:24px;
+    transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+    margin-top:6px;
     position:relative;
     overflow:hidden;
   }
-  .form-container button span{position:relative;z-index:1}
+  .form-container button span{position:relative;z-index:1;display:inline-flex;align-items:center;gap:12px}
+  .form-container button .submit-arrow{font-size:1rem;transition:transform 0.3s}
   .form-container button::before{
     content:'';position:absolute;inset:0;
     background:var(--gold-bright);
-    transform:translateY(100%);
+    transform:scaleX(0);transform-origin:left;
     transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);
   }
-  .form-container button:hover{
-    letter-spacing:6px;
-    box-shadow:0 20px 60px rgba(201,169,97,0.3);
-  }
-  .form-container button:hover::before{transform:translateY(0)}
+  .form-container button:hover{box-shadow:0 14px 36px rgba(201,169,97,0.2)}
+  .form-container button:hover::before{transform:scaleX(1)}
+  .form-container button:hover .submit-arrow{transform:translateX(5px)}
 
   /* DIVIDER */
   .divider{
@@ -1225,6 +1306,9 @@
     .cursor-dot,.cursor-ring{display:none}
     .nav-links{display:none}
     .about-grid,.duo-grid,.corp-grid{grid-template-columns:1fr;gap:70px}
+    .contact-grid{grid-template-columns:1fr;gap:52px}
+    .contact-copy .section-title{max-width:720px;font-size:clamp(2.7rem,8vw,4.5rem)}
+    .contact-intro{max-width:650px}
     .form-grid{grid-template-columns:1fr;gap:24px}
     section{padding:100px 6%}
     .about-visual{height:440px}
@@ -1236,22 +1320,56 @@
     .duo-portrait{height:400px}
     .duo-portrait::before{font-size:9rem}
   }
+  @media(max-width:560px){
+    .contact-grid{gap:40px}
+    .contact-copy .eyebrow{margin-bottom:22px}
+    .contact-copy .section-title{font-size:clamp(2.5rem,12vw,3.6rem)}
+    .contact-intro{margin:22px 0 28px;font-size:0.94rem}
+    .contact-whatsapp{width:100%;gap:10px;padding:13px}
+    .contact-whatsapp-arrow{margin-left:auto}
+    .form-container{padding:26px 20px}
+    .form-container::before{left:20px;right:20px}
+    .form-heading{align-items:flex-start;flex-direction:column;gap:10px;margin-bottom:22px;padding-bottom:20px}
+    .form-heading h3{font-size:1.8rem}
+    .form-required-note{white-space:normal}
+    .form-grid{margin-bottom:18px}
+    .form-container button{font-size:0.66rem;letter-spacing:1.7px;padding:16px}
+  }
 </style>
 </head>
 <body>
 
 <!-- LOADER -->
 <div class="loader" id="loader">
-  <img class="loader-logo" src="https://juliocesare.s3.sa-east-1.amazonaws.com/assets/img/logo-jcd.webp" alt="Júlio César & ">
+  <img class="loader-logo" src="https://juliocesaredanilo.s3.sa-east-1.amazonaws.com/assets/img/logo-jcd.webp" alt="Júlio César & Danilo">
 </div>
 
 <canvas id="bg-canvas"></canvas>
-<div class="cursor-dot"></div>
+<div class="cursor-dot"><svg xmlns="http://www.w3.org/2000/svg" viewBox="10 -6 92 92" aria-hidden="true">
+  <g transform="rotate(-45 20 0)">
+    <!-- headstock -->
+    <path d="M15.5 0h9l-0.8 13h-7.4z" fill="#8A6A3B" stroke="#E5C688" stroke-width="1"/>
+    <circle cx="14.6" cy="4" r="1.5" fill="#E5C688"/><circle cx="25.4" cy="4" r="1.5" fill="#E5C688"/>
+    <circle cx="14.8" cy="9" r="1.5" fill="#E5C688"/><circle cx="25.2" cy="9" r="1.5" fill="#E5C688"/>
+    <!-- neck -->
+    <rect x="17.6" y="13" width="4.8" height="38" fill="#3A2614" stroke="#E5C688" stroke-width="0.6"/>
+    <g stroke="#E5C688" stroke-width="0.5" opacity="0.7"><line x1="17.6" y1="20" x2="22.4" y2="20"/><line x1="17.6" y1="27" x2="22.4" y2="27"/><line x1="17.6" y1="33" x2="22.4" y2="33"/><line x1="17.6" y1="39" x2="22.4" y2="39"/><line x1="17.6" y1="44" x2="22.4" y2="44"/></g>
+    <!-- body (violão) -->
+    <path d="M20 47c-7.5 0-11.5 4.6-11.5 10.2 0 3.6 1.9 5.6 1.9 7.6 0 2.2-4.4 5.2-4.4 11.6C6 84.6 12.2 91 20 91s14-6.4 14-14.6c0-6.4-4.4-9.4-4.4-11.6 0-2 1.9-4 1.9-7.6C31.5 51.6 27.5 47 20 47z" fill="#C9A961" stroke="#F0EBE0" stroke-width="1.1"/>
+    <path d="M20 49.5c-6 0-9 3.7-9 8.2 0 3 1.6 4.8 1.6 6.9 0 2.6-4 5.2-4 11.3 0 6.8 5.1 12.1 11.4 12.1s11.4-5.3 11.4-12.1c0-6.1-4-8.7-4-11.3 0-2.1 1.6-3.9 1.6-6.9 0-4.5-3-8.2-9-8.2z" fill="#E5C688" opacity="0.35"/>
+    <!-- sound hole -->
+    <circle cx="20" cy="63.5" r="4.6" fill="#16131A" stroke="#8A6A3B" stroke-width="1"/>
+    <!-- bridge -->
+    <rect x="14.5" y="78" width="11" height="2.6" rx="1" fill="#3A2614"/>
+    <!-- strings -->
+    <g stroke="#F0EBE0" stroke-width="0.35" opacity="0.85"><line x1="18.6" y1="2" x2="18.6" y2="79"/><line x1="20" y1="2" x2="20" y2="79"/><line x1="21.4" y1="2" x2="21.4" y2="79"/></g>
+  </g>
+</svg></div>
 <div class="cursor-ring"></div>
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#hero" class="logo" aria-label="Júlio César &  — início"><img src="https://juliocesaredanilo.s3.sa-east-1.amazonaws.com/assets/img/logo-jcd.webp" alt="Júlio César & "></a>
+  <a href="#hero" class="logo" aria-label="Júlio César & Danilo — início"><img src="https://juliocesaredanilo.s3.sa-east-1.amazonaws.com/assets/img/logo-jcd.webp" alt="Júlio César & Danilo"></a>
   <ul class="nav-links">
     <li><a href="#sobre" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">Sobre</a></li>
     <li><a href="#artistas" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">A Dupla</a></li>
@@ -1267,7 +1385,7 @@
 <section class="hero" id="hero">
   <div class="hero-media" aria-hidden="true">
     <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="https://juliocesaredanilo.s3.sa-east-1.amazonaws.com/assets/img/hero-poster.jpg">
-      <source src="https://juliocesare.s3.sa-east-1.amazonaws.com/assets/video/hero-diretao.mp4" type="video/mp4">
+      <source src="https://juliocesaredanilo.s3.sa-east-1.amazonaws.com/assets/video/hero-diretao.mp4" type="video/mp4">
     </video>
     <div class="hero-shade"></div>
   </div>
@@ -1280,7 +1398,7 @@
       </div>
       <div class="hero-line line-2" data-parallax="0.08">
         <span class="amp">&</span>
-        <span class="gold"></span>
+        <span class="gold">Danilo</span>
       </div>
     </div>
     <div class="hero-subtitle">Tranquilidade para quem contrata, emoção para quem vive.</div>
@@ -1294,7 +1412,7 @@
     </div>
     <div class="hero-social"><span class="hero-social-label">Ouça e siga</span>
     <div class="social social-hero">
-      <a href="https://www.instagram.com/juliocesare/" target="_blank" rel="noopener" aria-label="Instagram de Júlio César &amp; Danilo" title="Instagram" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg><span>Instagram</span></a>
+      <a href="https://www.instagram.com/juliocesaredanilo/" target="_blank" rel="noopener" aria-label="Instagram de Júlio César &amp; Danilo" title="Instagram" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg><span>Instagram</span></a>
       <a href="https://youtu.be/ZP0dsu_7L_Y" target="_blank" rel="noopener" aria-label="YouTube de Júlio César &amp; Danilo" title="YouTube" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15.1V8.9l5.8 3.1-5.8 3.1z"/></svg><span>YouTube</span></a>
       <a href="https://open.spotify.com/intl-pt/artist/24tGhFC6wznqWukVKsJz3r" target="_blank" rel="noopener" aria-label="Spotify de Júlio César &amp; Danilo" title="Spotify" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.5a10.5 10.5 0 1 0 0 21 10.5 10.5 0 0 0 0-21zm4.8 15.2a.65.65 0 0 1-.9.2c-2.5-1.5-5.6-1.9-9.3-1a.65.65 0 1 1-.3-1.3c4-.9 7.5-.5 10.3 1.2.3.2.4.6.2.9zm1.3-2.9a.82.82 0 0 1-1.1.3c-2.8-1.7-7.1-2.2-10.4-1.2a.82.82 0 1 1-.5-1.6c3.8-1.1 8.5-.6 11.7 1.4.4.2.5.7.3 1.1zm.1-3c-3.4-2-8.9-2.2-12.1-1.2a1 1 0 1 1-.6-1.9c3.7-1.1 9.8-.9 13.7 1.4a1 1 0 0 1-1 1.7z"/></svg><span>Spotify</span></a>
     </div>
@@ -1319,8 +1437,6 @@
       <span>Casamentos</span>
       <span class="dot"></span>
       <span>Festas & Eventos</span>
-      <span class="dot"></span>
-      <span>Leilões</span>
       <span class="dot"></span>
       <span>Rodeios</span>
       <span class="dot"></span>
@@ -1377,25 +1493,22 @@
       <h2 class="section-title">Dois talentos,<br><em>uma assinatura.</em></h2>
     </div>
     <div class="duo-grid">
-	
-	
       <div class="duo-card reveal" onmousemove="tiltCard(event,this)" onmouseenter="hoverCursor()" onmouseleave="resetTilt(this);unhoverCursor()">
         <div class="duo-portrait" data-initial="JC"><img src="https://juliocesaredanilo.s3.sa-east-1.amazonaws.com/assets/img/danilo.webp" alt="Danilo" loading="lazy" style="object-position:30% 20%"></div>
-         <div class="duo-role">Segunda voz · Carisma · Palco</div>
-        <h3>Júlio César</h3>
-            <p>Voz marcante, carisma raro e um talento que apareceu cedo: Júlio César venceu seu primeiro concurso musical aos 5 anos e nunca mais desceu do palco — a não ser para levar o palco ao meio do público. Primeira voz da dupla desde 1995, é dele o dom que nenhuma técnica ensina: ler uma plateia, quebrar a distância entre artista e convidado e transformar espectadores em protagonistas da noite.</p>
+       
+<div class="duo-role">Segunda voz · Carisma · Palco</div>
+ 
+		        <h3>Júlio César</h3>
+        <p>Voz marcante, carisma raro e um talento que apareceu cedo: Júlio César venceu seu primeiro concurso musical aos 5 anos e nunca mais desceu do palco — a não ser para levar o palco ao meio do público. Primeira voz da dupla desde 1995, é dele o dom que nenhuma técnica ensina: ler uma plateia, quebrar a distância entre artista e convidado e transformar espectadores em protagonistas da noite.</p>
+		
+     
       </div>
-      
-	  
-	  <div class="duo-card reveal reveal-delay-1" onmousemove="tiltCard(event,this)" onmouseenter="hoverCursor()" onmouseleave="resetTilt(this);unhoverCursor()">
+      <div class="duo-card reveal reveal-delay-1" onmousemove="tiltCard(event,this)" onmouseenter="hoverCursor()" onmouseleave="resetTilt(this);unhoverCursor()">
         <div class="duo-portrait" data-initial="D"><img src="https://juliocesaredanilo.s3.sa-east-1.amazonaws.com/assets/img/julio-cesar.webp" alt="Júlio César" loading="lazy" style="object-position:60% 20%"></div>
-      <div class="duo-role">Compositor · Arranjador · Violonista</div>       
-        <h3>Danilo</h3>
-		    <p>Compositor, produtor musical, arranjador e violonista. Formado em conservatório desde os 9 anos e com trajetória também como professor de música, une rigor técnico e três décadas de palco. É o responsável por cada detalhe que o público sente sem perceber: o arranjo exato, o repertório desenhado para cada evento, o som impecável. Se um show nunca falha, é porque existe uma engenharia por trás da emoção.</p>
+          <div class="duo-role">Compositor · Arranjador · Violonista</div>
+          <h3>Danilo</h3>
+        <p>Compositor, produtor musical, arranjador e violonista. Formado em conservatório desde os 9 anos e com trajetória também como professor de música, une rigor técnico e três décadas de palco. É o responsável por cada detalhe que o público sente sem perceber: o arranjo exato, o repertório desenhado para cada evento, o som impecável. Se um show nunca falha, é porque existe uma engenharia por trás da emoção.</p>
       </div>
-	  
-	  
-	  
     </div>
   </div>
 </section>
@@ -1408,10 +1521,10 @@
       <h2 class="section-title">Quinze anos<br>de <span class="outline">estrada.</span></h2>
     </div>
     <div class="bio-content reveal">
-      <p>Um nasceu em Coromandel (MG), berço do grande compositor Goiá; o outro em Uberlândia — e juntos carregam no sangue as duas escolas, da raiz de Tião Carreiro & Pardinho à emoção de Leandro & Leonardo.</p>
+      <p>Um nasceu em Coromandel - MG, cidade do famoso "Goiá"; o outro em Uberlândia — e juntos carregam no sangue as duas escolas, da raiz de Tião Carreiro & Pardinho à emoção de Leandro & Leonardo.</p>
       <p>Em dezembro de 2011 veio o primeiro show profissional. Dali em diante, a estrada: bares, restaurantes e festas do interior de Minas — a escola mais exigente que existe, onde o artista aprende a conquistar plateia por plateia, sem cenário e sem desculpa. Foi ali que nasceu a marca registrada da dupla: <em>em 15 anos de carreira, só show bom.</em></p>
-      <p>O talento levou os irmãos aos grandes palcos: temporadas nas principais casas de show de São Paulo, os cruzeiros temáticos de Zezé Di Camargo & Luciano e de Luan Santana, onde cantaram para o público mais exigente que existe, o fã de outro artista — e destaque na imprensa nacional. Hoje, são a escolha de empresas como Danone e JBS para os eventos em que nada pode dar errado, e a atração confirmada há mais de uma década consecutiva no leilão Nelore HRO — porque o cliente que volta todo ano é a maior prova que um artista pode ter.</p>
-      <p>Em 2026, a dupla celebrou os 15 anos de estrada com o projeto audiovisual <em>Tome Moda</em>: releituras dos clássicos que marcaram gerações, com arranjos próprios e a assinatura que os define — um show que não acontece para o público, mas com ele.</p>
+      <p>O talento levou os irmãos aos grandes palcos: temporadas nas principais casas de show de Uberlândia, os cruzeiros temáticos de Zezé Di Camargo & Luciano e de Luan Santana, onde cantaram para o público mais exigente que existe, o fã de outro artista — e destaque na imprensa nacional. Hoje, são a escolha de empresas como Danone e JBS para os eventos em que nada pode dar errado, e a atração confirmada há mais de uma década consecutiva no leilão Nelore HRO — porque o cliente que volta todo ano é a maior prova que um artista pode ter.</p>
+      <p>Em 2025, a dupla celebrou os 15 anos de estrada com o projeto audiovisual <em>Tome Moda</em>: releituras dos clássicos que marcaram gerações, com arranjos próprios e a assinatura que os define — um show que não acontece para o público, mas com ele.</p>
     </div>
   </div>
 </section>
@@ -1472,40 +1585,21 @@
     </div>
     <div class="disco-list reveal">
       <a href="#" class="disco-item" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">
-        <div class="disco-year">1998</div>
+        <div class="disco-year">2011</div>
         <div class="disco-title">Júlio César & Danilo</div>
         <div class="disco-arrow">→</div>
       </a>
       <a href="#" class="disco-item" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">
-        <div class="disco-year">2009</div>
+        <div class="disco-year">2015</div>
         <div class="disco-title">Ao Vivo em Anhanguera</div>
         <div class="disco-arrow">→</div>
       </a>
       <a href="#" class="disco-item" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">
-        <div class="disco-year">2010</div>
+        <div class="disco-year">2020</div>
         <div class="disco-title">Ao Vivo em São Bernardo do Campo</div>
         <div class="disco-arrow">→</div>
       </a>
-      <a href="#" class="disco-item" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">
-        <div class="disco-year">2014</div>
-        <div class="disco-title">Tanto Querer</div>
-        <div class="disco-arrow">→</div>
-      </a>
-      <a href="#" class="disco-item" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">
-        <div class="disco-year">2023</div>
-        <div class="disco-title">Receba</div>
-        <div class="disco-arrow">→</div>
-      </a>
-      <a href="#" class="disco-item" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">
-        <div class="disco-year">2024</div>
-        <div class="disco-title">Clima de Copo</div>
-        <div class="disco-arrow">→</div>
-      </a>
-      <a href="#" class="disco-item" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">
-        <div class="disco-year">2026</div>
-        <div class="disco-title">Tome Moda</div>
-        <div class="disco-arrow">→</div>
-      </a>
+   
     </div>
   </div>
 </section>
@@ -1521,7 +1615,7 @@
       <div class="corp-col reveal">
         <h3>Quando o evento leva o nome da sua <em>empresa,</em> não existe segunda chance.</h3>
         <p>Cada detalhe importa: o momento em que a música começa, o repertório certo para o perfil do público e a segurança de que tudo vai acontecer como planejado.</p>
-        <p>É por isso que marcas como <strong>Danone</strong> e <strong>JBS</strong> escolhem Júlio César & Danilo: 15 anos de palco a serviço de eventos que não podem dar errado.</p>
+        <p>É por isso que marcas como <strong>Danone</strong> e <strong>JBS</strong> escolhem Júlio César & Danilo: 30 anos de palco a serviço de eventos que não podem dar errado.</p>
         <div class="brands-row">
           <div class="brand-logo" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">Danone</div>
           <div class="brand-logo" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">JBS</div>
@@ -1546,42 +1640,61 @@
 <!-- CTA FINAL -->
 <section id="contato" class="cta-section">
   <div class="container">
-    <div class="section-header reveal" style="margin-bottom:0;">
-      <div class="eyebrow">Contato</div>
-      <h2 class="section-title">Vamos conversar<br>sobre o <em>seu evento?</em></h2>
-      <p style="margin:32px auto 0;color:var(--muted);max-width:560px;font-size:1rem;line-height:1.9;">
-        Conte o essencial abaixo e receba nossa proposta em até 1 dia útil — com o formato ideal para o seu evento.
-      </p>
-      <div class="divider"><span>✦</span></div>
-    </div>
-    <form class="form-container reveal" onsubmit="event.preventDefault();alert('Recebemos seu contato! Em breve entraremos em contato.')">
-      <div class="form-grid">
-        <div class="field"><input type="text" placeholder="Seu nome" required></div>
-        <div class="field"><input type="text" placeholder="Nome da empresa" required></div>
-      </div>
-      <div class="form-grid">
-        <div class="field"><input type="email" placeholder="E-mail" required></div>
-        <div class="field"><input type="tel" placeholder="Telefone / WhatsApp" required></div>
-      </div>
-      <div class="form-grid">
-        <div class="field">
-          <select required>
-            <option value="">Tipo de evento</option>
-            <option>Corporativo</option>
-            <option>Casamento</option>
-            <option>Aniversário</option>
-            <option>Festival</option>
-            <option>Leilão / Rodeio</option>
-            <option>Outro</option>
-          </select>
+    <div class="contact-grid">
+      <div class="contact-copy reveal">
+        <div class="eyebrow">Contato e agenda</div>
+        <h2 class="section-title">Seu evento merece um show <em>à altura.</em></h2>
+        <p class="contact-intro">Conte pra gente os detalhes da ocasião. Nossa equipe prepara uma proposta com o formato ideal para o seu evento.</p>
+        <div class="contact-promises">
+          <div class="contact-promise">
+            <span class="contact-promise-mark" aria-hidden="true">✓</span>
+            <div><strong>Retorno em até 1 dia útil</strong><span>Receba uma resposta da nossa equipe com os próximos passos.</span></div>
+          </div>
+          <div class="contact-promise">
+            <span class="contact-promise-mark" aria-hidden="true">✓</span>
+            <div><strong>Proposta pensada para o seu evento</strong><span>Alinhamos ocasião, data e formato para montar a melhor experiência.</span></div>
+          </div>
         </div>
-        <div class="field"><input type="date" required></div>
+        <a class="contact-whatsapp" href="https://wa.me/553498955543?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20quero%20conversar%20sobre%20um%20evento." target="_blank" rel="noopener" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">
+          <span class="contact-whatsapp-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16.04 3C9.4 3 4 8.38 4 15.01c0 2.12.56 4.19 1.62 6.01L4 29l8.17-1.6a12.05 12.05 0 0 0 3.87.64h.01C22.68 28.04 28 22.66 28 16.03 28 9.4 22.68 3 16.04 3zm0 22.92h-.01a9.96 9.96 0 0 1-5.07-1.39l-.36-.22-4.85.95.97-4.72-.24-.38a9.88 9.88 0 0 1-1.52-5.15c0-5.48 4.47-9.94 9.98-9.94 5.5 0 9.96 4.46 9.96 9.96 0 5.49-4.46 10.89-8.86 10.89zm5.46-7.44c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg></span>
+          <span class="contact-whatsapp-copy"><strong>Prefere conversar agora?</strong><span>Chame nossa equipe pelo WhatsApp</span></span>
+          <span class="contact-whatsapp-arrow" aria-hidden="true">↗</span>
+        </a>
       </div>
-      <div class="form-grid full">
-        <div class="field"><textarea rows="3" placeholder="Conte um pouco sobre o evento..."></textarea></div>
-      </div>
-      <button type="submit" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()"><span>Enviar e receber proposta</span></button>
-    </form>
+      <form class="form-container reveal reveal-delay-1" onsubmit="event.preventDefault();alert('Recebemos seu contato! Em breve entraremos em contato.')">
+        <div class="form-heading">
+          <div><span class="form-kicker">Vamos começar</span><h3>Solicite uma proposta</h3></div>
+          <span class="form-required-note"><span>*</span> Obrigatório</span>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label for="contact-name">Seu nome <span aria-hidden="true">*</span></label><input id="contact-name" name="name" type="text" placeholder="Como podemos chamar você?" autocomplete="name" required></div>
+          <div class="field"><label for="contact-company">Empresa</label><input id="contact-company" name="company" type="text" placeholder="Nome da empresa" autocomplete="organization"></div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label for="contact-email">E-mail <span aria-hidden="true">*</span></label><input id="contact-email" name="email" type="email" placeholder="voce@empresa.com.br" autocomplete="email" required></div>
+          <div class="field"><label for="contact-phone">Telefone / WhatsApp <span aria-hidden="true">*</span></label><input id="contact-phone" name="phone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel" required></div>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="contact-event">Tipo de evento <span aria-hidden="true">*</span></label>
+            <select id="contact-event" name="event_type" required>
+              <option value="">Selecione uma opção</option>
+              <option>Corporativo</option>
+              <option>Casamento</option>
+              <option>Aniversário</option>
+              <option>Festival</option>
+              <option>Leilão / Rodeio</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="field"><label for="contact-date">Data do evento <span aria-hidden="true">*</span></label><input id="contact-date" name="event_date" type="date" required></div>
+        </div>
+        <div class="form-grid full">
+          <div class="field"><label for="contact-details">Detalhes do evento</label><textarea id="contact-details" name="event_details" rows="3" placeholder="Cidade, público estimado ou outras informações importantes"></textarea></div>
+        </div>
+        <button type="submit" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()"><span>Enviar solicitação <span class="submit-arrow" aria-hidden="true">→</span></span></button>
+      </form>
+    </div>
   </div>
 </section>
 
@@ -1593,7 +1706,7 @@
       <a href="https://youtu.be/ZP0dsu_7L_Y" target="_blank" rel="noopener" aria-label="YouTube de Júlio César &amp; Danilo" title="YouTube" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12a31 31 0 0 0 .5 4.8 3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.7 15.1V8.9l5.8 3.1-5.8 3.1z"/></svg><span>YouTube</span></a>
       <a href="https://open.spotify.com/intl-pt/artist/24tGhFC6wznqWukVKsJz3r" target="_blank" rel="noopener" aria-label="Spotify de Júlio César &amp; Danilo" title="Spotify" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.5a10.5 10.5 0 1 0 0 21 10.5 10.5 0 0 0 0-21zm4.8 15.2a.65.65 0 0 1-.9.2c-2.5-1.5-5.6-1.9-9.3-1a.65.65 0 1 1-.3-1.3c4-.9 7.5-.5 10.3 1.2.3.2.4.6.2.9zm1.3-2.9a.82.82 0 0 1-1.1.3c-2.8-1.7-7.1-2.2-10.4-1.2a.82.82 0 1 1-.5-1.6c3.8-1.1 8.5-.6 11.7 1.4.4.2.5.7.3 1.1zm.1-3c-3.4-2-8.9-2.2-12.1-1.2a1 1 0 1 1-.6-1.9c3.7-1.1 9.8-.9 13.7 1.4a1 1 0 0 1-1 1.7z"/></svg><span>Spotify</span></a>
     </div>
-  <div class="footer-copy">© 2026 · 15 Anos de Estrada · Todos os direitos reservados</div>
+  <div class="footer-copy">© 2025 · 30 Anos de Estrada · Todos os direitos reservados</div>
 </footer>
 
 <!-- WHATSAPP FLUTUANTE -->
@@ -1694,7 +1807,7 @@ const REELS = [
     current = (i + REELS.length) % REELS.length;
     const [slug,title] = REELS[current];
     lb.classList.remove('is-iframe');
-    stage.innerHTML = `<video controls autoplay playsinline poster="https://juliocesaredanilo.s3.sa-east-1.amazonaws.com/assets/reels/${slug}.jpg" src="assets/reels/${slug}.mp4"></video>`;
+    stage.innerHTML = `<video controls autoplay playsinline poster="https://juliocesaredanilo.s3.sa-east-1.amazonaws.com/assets/reels/${slug}.jpg" src="https://juliocesaredanilo.s3.sa-east-1.amazonaws.com/assets/reels/${slug}.mp4"></video>`;
     cap.textContent = title;
     open();
   }
@@ -1920,6 +2033,10 @@ function animateCursor() {
 }
 animateCursor();
 
+addEventListener('mousemove', () => cursorDot.classList.add('on'), { once: true });
+addEventListener('mousedown', () => {
+  cursorDot.classList.remove('strum'); void cursorDot.offsetWidth; cursorDot.classList.add('strum');
+});
 window.hoverCursor = () => document.body.classList.add('cursor-hover');
 window.unhoverCursor = () => document.body.classList.remove('cursor-hover');
 
