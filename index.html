@@ -550,27 +550,34 @@
 
   /* ============ DUO / ARTISTAS ============ */
   .duo-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:60px;
+    display:flex;
+    flex-direction:column;
+    gap:88px;
     perspective:1500px;
   }
   .duo-card{
     position:relative;
-    transform-style:preserve-3d;
-    transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,0.88fr);
+    gap:clamp(40px,7vw,112px);
+    align-items:center;
   }
   .duo-portrait{
-    height:520px;
+    grid-column:1;
+    height:clamp(420px,48vw,600px);
     position:relative;
     overflow:hidden;
     background:
       radial-gradient(circle at 30% 30%,rgba(201,169,97,0.15),transparent 60%),
       linear-gradient(135deg,#16131A,#08060A);
     border:1px solid var(--line);
-    margin-bottom:40px;
+    margin-bottom:0;
     transition:all 0.5s;
+    border-radius:24px;
   }
+  .duo-bio{grid-column:2}
+  .duo-card:nth-child(even) .duo-portrait{grid-column:2}
+  .duo-card:nth-child(even) .duo-bio{grid-column:1;grid-row:1}
   .duo-card:hover .duo-portrait{
     border-color:rgba(201,169,97,0.5);
     box-shadow:
@@ -601,6 +608,21 @@
     inset:20px;
     border:1px solid rgba(201,169,97,0.08);
     pointer-events:none;
+    border-radius:16px;
+  }
+  #artistas .duo-portrait:hover{animation:artistPhotoPulse 1.55s ease-in-out infinite}
+  #artistas .section-header .section-title{transform-origin:center}
+  #artistas .section-header .section-title:hover{animation:artistTitlePulse 1.55s ease-in-out infinite}
+  @keyframes artistPhotoPulse{
+    0%,100%{transform:scale(1);box-shadow:0 12px 32px rgba(0,0,0,0.25),0 0 0 rgba(201,169,97,0)}
+    50%{transform:scale(1.018);box-shadow:0 20px 46px rgba(0,0,0,0.38),0 0 28px rgba(201,169,97,0.22)}
+  }
+  @keyframes artistTitlePulse{
+    0%,100%{transform:scale(1);filter:drop-shadow(0 0 0 rgba(201,169,97,0))}
+    50%{transform:scale(1.025);filter:drop-shadow(0 0 16px rgba(201,169,97,0.26))}
+  }
+  @media(prefers-reduced-motion:reduce){
+    #artistas .duo-portrait:hover,#artistas .section-header .section-title:hover{animation:none}
   }
   .duo-role{
     font-size:0.68rem;
@@ -611,20 +633,36 @@
     font-weight:500;
   }
   .duo-card h3{
-    font-size:2.8rem;
+    position:relative;
+    width:fit-content;
+    font-size:clamp(3.2rem,5.4vw,5rem);
+    line-height:0.98;
     font-weight:300;
-    margin-bottom:28px;
+    margin-bottom:24px;
+    padding-bottom:14px;
     color:var(--cream);
     font-style:italic;
-    letter-spacing:-0.01em;
-    transition:color 0.4s;
+    letter-spacing:-0.035em;
+    text-shadow:0 10px 38px rgba(201,169,97,0.08);
+    transition:color 0.4s,text-shadow 0.4s,transform 0.4s;
   }
-  .duo-card:hover h3{color:var(--gold-bright)}
+  .duo-card h3::after{
+    content:'';position:absolute;left:0;bottom:0;
+    width:54px;height:2px;background:var(--gold);
+    transition:width 0.45s cubic-bezier(0.4,0,0.2,1);
+  }
+  .duo-card:hover h3{color:var(--gold-bright);text-shadow:0 0 32px rgba(201,169,97,0.2);transform:translateX(3px)}
+  .duo-card:hover h3::after{width:100%}
   .duo-card p{
+    max-width:560px;
     font-size:0.98rem;
     color:var(--muted);
     line-height:1.95;
+    padding-left:20px;
+    border-left:1px solid rgba(201,169,97,0.28);
+    transition:color 0.4s,border-color 0.4s,transform 0.4s;
   }
+  .duo-card:hover p{color:#C4BCAE;border-color:var(--gold);transform:translateX(4px)}
 
   /* ============ BIO ============ */
   .bio-section{background:var(--dark-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -1100,10 +1138,12 @@
   .duo-portrait img{
     position:absolute;inset:0;width:100%;height:100%;
     object-fit:cover;z-index:1;
-    transition:transform 0.8s cubic-bezier(0.4,0,0.2,1);
+    opacity:0;
+    transition:opacity 1s ease,transform 0.8s cubic-bezier(0.4,0,0.2,1);
     -webkit-mask-image:linear-gradient(180deg,#000 70%,transparent 100%);
             mask-image:linear-gradient(180deg,#000 70%,transparent 100%);
   }
+  .duo-portrait img.is-active{opacity:1}
   .duo-card:hover .duo-portrait img{transform:scale(1.04)}
   .duo-portrait::after{z-index:2}
 
@@ -1305,7 +1345,14 @@
     body{cursor:auto}
     .cursor-dot,.cursor-ring{display:none}
     .nav-links{display:none}
-    .about-grid,.duo-grid,.corp-grid{grid-template-columns:1fr;gap:70px}
+    .about-grid,.corp-grid{grid-template-columns:1fr;gap:70px}
+    .duo-grid{gap:64px}
+    .duo-card{grid-template-columns:1fr;gap:28px}
+    .duo-portrait,.duo-card:nth-child(even) .duo-portrait{grid-column:1;grid-row:1;height:clamp(360px,72vw,480px)}
+    .duo-portrait{border-radius:20px}
+    .duo-portrait::after{border-radius:13px}
+    .duo-bio,.duo-card:nth-child(even) .duo-bio{grid-column:1;grid-row:2}
+    .duo-card h3{font-size:clamp(2.8rem,9vw,4.5rem)}
     .contact-grid{grid-template-columns:1fr;gap:52px}
     .contact-copy .section-title{max-width:720px;font-size:clamp(2.7rem,8vw,4.5rem)}
     .contact-intro{max-width:650px}
@@ -1317,7 +1364,6 @@
     .disco-title{font-size:1.3rem}
     .disco-item:hover{padding-left:24px}
     .about-card-initials{font-size:3rem}
-    .duo-portrait{height:400px}
     .duo-portrait::before{font-size:9rem}
   }
   @media(max-width:560px){
@@ -1493,21 +1539,29 @@
       <h2 class="section-title">Dois talentos,<br><em>uma assinatura.</em></h2>
     </div>
     <div class="duo-grid">
-      <div class="duo-card reveal" onmousemove="tiltCard(event,this)" onmouseenter="hoverCursor()" onmouseleave="resetTilt(this);unhoverCursor()">
-        <div class="duo-portrait" data-initial="JC"><img src="https://juliocesaredanilo.s3.sa-east-1.amazonaws.com/assets/img/danilo.webp" alt="Danilo" loading="lazy" style="object-position:30% 20%"></div>
-       
-<div class="duo-role">Segunda voz · Carisma · Palco</div>
- 
-		        <h3>Júlio César</h3>
-        <p>Voz marcante, carisma raro e um talento que apareceu cedo: Júlio César venceu seu primeiro concurso musical aos 5 anos e nunca mais desceu do palco — a não ser para levar o palco ao meio do público. Primeira voz da dupla desde 1995, é dele o dom que nenhuma técnica ensina: ler uma plateia, quebrar a distância entre artista e convidado e transformar espectadores em protagonistas da noite.</p>
-		
-     
+      <div class="duo-card reveal" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">
+        <div class="duo-portrait" data-initial="JC" data-carousel="julio" role="img" aria-label="Júlio César em diferentes apresentações">
+          <img class="duo-slide is-active" src="assets/img/julio-cesar-01.png" alt="" aria-hidden="true" loading="lazy" style="object-position:50% 28%">
+          <img class="duo-slide" src="assets/img/julio-cesar-02.jpg" alt="" aria-hidden="true" loading="lazy" style="object-position:55% 24%">
+          <img class="duo-slide" src="assets/img/julio-cesar-03.jpg" alt="" aria-hidden="true" loading="lazy" style="object-position:50% 28%">
+        </div>
+        <div class="duo-bio">
+          <div class="duo-role">Segunda voz · Carisma · Palco</div>
+          <h3>Júlio César</h3>
+          <p>Voz marcante, carisma raro e um talento que apareceu cedo: Júlio César venceu seu primeiro concurso musical aos 5 anos e nunca mais desceu do palco — a não ser para levar o palco ao meio do público. Primeira voz da dupla desde 1995, é dele o dom que nenhuma técnica ensina: ler uma plateia, quebrar a distância entre artista e convidado e transformar espectadores em protagonistas da noite.</p>
+        </div>
       </div>
-      <div class="duo-card reveal reveal-delay-1" onmousemove="tiltCard(event,this)" onmouseenter="hoverCursor()" onmouseleave="resetTilt(this);unhoverCursor()">
-        <div class="duo-portrait" data-initial="D"><img src="https://juliocesaredanilo.s3.sa-east-1.amazonaws.com/assets/img/julio-cesar.webp" alt="Júlio César" loading="lazy" style="object-position:60% 20%"></div>
+      <div class="duo-card reveal reveal-delay-1" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">
+        <div class="duo-portrait" data-initial="D" data-carousel="danilo" role="img" aria-label="Danilo em diferentes apresentações">
+          <img class="duo-slide is-active" src="assets/img/danilo-01.png" alt="" aria-hidden="true" loading="lazy" style="object-position:50% 28%">
+          <img class="duo-slide" src="assets/img/danilo-02.jpg" alt="" aria-hidden="true" loading="lazy" style="object-position:50% 28%">
+          <img class="duo-slide" src="assets/img/danilo-03.jpg" alt="" aria-hidden="true" loading="lazy" style="object-position:48% 28%">
+        </div>
+        <div class="duo-bio">
           <div class="duo-role">Compositor · Arranjador · Violonista</div>
           <h3>Danilo</h3>
-        <p>Compositor, produtor musical, arranjador e violonista. Formado em conservatório desde os 9 anos e com trajetória também como professor de música, une rigor técnico e três décadas de palco. É o responsável por cada detalhe que o público sente sem perceber: o arranjo exato, o repertório desenhado para cada evento, o som impecável. Se um show nunca falha, é porque existe uma engenharia por trás da emoção.</p>
+          <p>Compositor, produtor musical, arranjador e violonista. Formado em conservatório desde os 9 anos e com trajetória também como professor de música, une rigor técnico e três décadas de palco. É o responsável por cada detalhe que o público sente sem perceber: o arranjo exato, o repertório desenhado para cada evento, o som impecável. Se um show nunca falha, é porque existe uma engenharia por trás da emoção.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -1581,7 +1635,7 @@
   <div class="container">
     <div class="section-header reveal">
       <div class="eyebrow">Discografia</div>
-      <h2 class="section-title">Um amor pra cuidar<br><em>ao vivo.</em></h2>
+      <h2 class="section-title">Uma obra construída<br><em>ao vivo.</em></h2>
     </div>
     <div class="disco-list reveal">
       <a href="#" class="disco-item" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">
@@ -1591,12 +1645,12 @@
       </a>
       <a href="#" class="disco-item" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">
         <div class="disco-year">2015</div>
-        <div class="disco-title">Brigas</div>
+        <div class="disco-title">Ao Vivo em Anhanguera</div>
         <div class="disco-arrow">→</div>
       </a>
       <a href="#" class="disco-item" onmouseenter="hoverCursor()" onmouseleave="unhoverCursor()">
         <div class="disco-year">2020</div>
-        <div class="disco-title">Diretão</div>
+        <div class="disco-title">Ao Vivo em São Bernardo do Campo</div>
         <div class="disco-arrow">→</div>
       </a>
    
@@ -1742,22 +1796,6 @@ const REELS = [
   ['paixao-proibida','Paixão Proibida'],
   ['coracao-sertanejo','Coração Sertanejo'],
   ['sao-tantas-coisas','São Tantas Coisas'],
-  ['coracao-partido','Coração Partido'],
-  ['alguem','Alguém'],
-  ['dengo','Dengo'],
-  ['paixao-no-palco','A Paixão no Palco'],
-  ['dona-do-destino','Dona do Destino'],
-  ['fabio-jr','Fábio Jr.'],
-  ['energia-contagiante','Energia Contagiante'],
-  ['nao-quero-mais','Não Quero Mais'],
-  ['emocao-no-bar','Emoção no Bar'],
-  ['nascemos','Nascemos'],
-  ['cantar-junto','Pra Cantar Junto'],
-  ['so-quero-seu-amor','Só Quero Seu Amor'],
-  ['bar-ao-som-de-acordes','Bar ao Som de Acordes'],
-  ['emocao-e-nostalgia','Emoção e Nostalgia'],
-  ['cancao-que-toca-o-coracao','A Canção que Toca o Coração'],
-  ['danilo-e-julio-emocionam','Danilo e Júlio César Emocionam'],
 ];
 (function(){
   const rail = document.getElementById('reelsRail');
@@ -2053,6 +2091,29 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ============ RETRATOS DINÂMICOS ============
+const reducePortraitMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.querySelectorAll('[data-carousel]').forEach(carousel => {
+  const slides = [...carousel.querySelectorAll('.duo-slide')];
+  if (slides.length < 2 || reducePortraitMotion) return;
+  let activeSlide = Math.max(0, slides.findIndex(slide => slide.classList.contains('is-active')));
+  let carouselTimer = null;
+  const rotatePortrait = () => {
+    slides[activeSlide].classList.remove('is-active');
+    activeSlide = (activeSlide + 1) % slides.length;
+    slides[activeSlide].classList.add('is-active');
+  };
+  const carouselObserver = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting && !carouselTimer) {
+      carouselTimer = setInterval(rotatePortrait, 5000);
+    } else if (!entry.isIntersecting && carouselTimer) {
+      clearInterval(carouselTimer);
+      carouselTimer = null;
+    }
+  }, { threshold: 0.25 });
+  carouselObserver.observe(carousel);
+});
 
 // ============ TILT ============
 window.tiltCard = (e, el) => {
