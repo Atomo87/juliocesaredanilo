@@ -139,30 +139,34 @@
     color:var(--cream);text-decoration:none;
     font-size:0.72rem;letter-spacing:2.5px;
     text-transform:uppercase;font-weight:400;
-    position:relative;transition:color 0.3s;
+    display:inline-block;position:relative;
+    transition:color 0.3s,opacity 0.3s,transform 0.3s,text-shadow 0.3s;
     opacity:0.7;
   }
   .nav-links a::after{
     content:'';position:absolute;
-    bottom:-8px;left:0;
+    bottom:-9px;left:0;
     width:0;height:1px;
-    background:var(--gold);
-    transition:width 0.4s cubic-bezier(0.4,0,0.2,1);
+    background:linear-gradient(90deg,var(--gold),var(--gold-bright));
+    box-shadow:0 0 12px rgba(201,169,97,0.32);
+    transition:width 0.45s cubic-bezier(0.4,0,0.2,1),height 0.3s;
   }
-  .nav-links a:hover{color:var(--gold);opacity:1}
-  .nav-links a:hover::after{width:100%}
+  .nav-links a:hover{color:var(--gold-bright);opacity:1;transform:translateY(-2px);text-shadow:0 0 18px rgba(201,169,97,0.2)}
+  .nav-links a:hover::after{width:100%;height:2px}
   .nav-cta{
     padding:14px 28px;
-    background:var(--gold);
+    background:linear-gradient(135deg,#D8BD7D 0%,var(--gold) 58%,#B9934D 100%);
+    border:1px solid rgba(229,198,136,0.72);
+    border-radius:4px;
     color:var(--dark);
     font-size:0.72rem;letter-spacing:3px;
     text-transform:uppercase;font-weight:500;
     text-decoration:none;
     position:relative;
     overflow:hidden;
-    transition:all 0.4s;
+    transition:transform 0.35s,box-shadow 0.35s,border-color 0.35s;
   }
-  .nav-cta span{position:relative;z-index:1}
+  .nav-cta span{position:relative;z-index:2}
   .nav-cta::before{
     content:'';position:absolute;inset:0;
     background:var(--gold-bright);
@@ -170,6 +174,15 @@
     transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);
   }
   .nav-cta:hover::before{transform:translateX(0)}
+  .nav-cta::after{
+    content:'';position:absolute;z-index:1;top:-35%;left:-65%;width:38%;height:170%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,0.42),transparent);
+    transform:skewX(-22deg);transition:left 0.7s ease;pointer-events:none;
+  }
+  .nav-cta:hover{transform:translateY(-3px);border-color:var(--gold-bright);box-shadow:0 12px 32px rgba(201,169,97,0.24)}
+  .nav-cta:hover::after{left:140%}
+  .nav-cta:active{transform:translateY(-1px) scale(0.99)}
+  .nav-links a:focus-visible,.nav-cta:focus-visible,.btn-primary:focus-visible,.btn-secondary:focus-visible{outline:2px solid var(--gold-bright);outline-offset:5px}
 
   /* ============ HERO ============ */
   .hero{
@@ -279,7 +292,10 @@
   }
   .btn-primary{
     padding:20px 48px;
-    background:var(--gold);
+    background:linear-gradient(135deg,#D8BD7D 0%,var(--gold) 58%,#B9934D 100%);
+    border:1px solid rgba(229,198,136,0.72);
+    border-radius:4px;
+    box-shadow:0 10px 30px rgba(201,169,97,0.14);
     color:var(--dark);
     font-size:0.75rem;
     letter-spacing:3px;
@@ -299,30 +315,49 @@
     transform-origin:left;
     transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);
   }
-  .btn-primary span{position:relative;z-index:1}
+  .btn-primary::after{
+    content:'';position:absolute;z-index:1;top:-35%;left:-65%;width:34%;height:170%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,0.46),transparent);
+    transform:skewX(-22deg);transition:left 0.75s ease;pointer-events:none;
+  }
+  .btn-primary span{position:relative;z-index:2}
   .btn-primary .arrow{
-    position:relative;z-index:1;
+    position:relative;z-index:2;
     transition:transform 0.4s;
   }
   .btn-primary:hover::before{transform:scaleX(1)}
+  .btn-primary:hover::after{left:140%}
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 18px 42px rgba(201,169,97,0.25);border-color:var(--gold-bright)}
   .btn-primary:hover .arrow{transform:translateX(6px)}
+  .btn-primary:active{transform:translateY(-1px) scale(0.99)}
   .btn-secondary{
     padding:20px 48px;
-    background:transparent;
+    background:rgba(17,14,19,0.94);
     color:var(--cream);
-    border:1px solid rgba(240,235,224,0.2);
+    border:1px solid rgba(201,169,97,0.42);
+    border-radius:4px;
+    box-shadow:inset 0 1px rgba(255,255,255,0.04),0 8px 24px rgba(0,0,0,0.22);
     font-size:0.75rem;
     letter-spacing:3px;
     text-transform:uppercase;
     font-weight:400;
     text-decoration:none;
-    transition:all 0.4s;
+    transition:color 0.35s,border-color 0.35s,background 0.35s,transform 0.35s,box-shadow 0.35s;
     font-family:'Inter',sans-serif;
   }
   .btn-secondary:hover{
-    border-color:var(--gold);
-    color:var(--gold);
-    background:rgba(201,169,97,0.05);
+    border-color:rgba(229,198,136,0.75);
+    color:var(--gold-bright);
+    background:rgba(201,169,97,0.16);
+    transform:translateY(-3px);
+    box-shadow:0 12px 30px rgba(201,169,97,0.12);
+  }
+  .btn-secondary:active{transform:translateY(-1px) scale(0.99)}
+  @media(prefers-reduced-motion:reduce){
+    .nav-links a,.nav-links a::after,.nav-cta,.nav-cta::before,.nav-cta::after,
+    .btn-primary,.btn-primary::before,.btn-primary::after,.btn-primary .arrow,.btn-secondary,
+    .form-container button,.form-container button::before,.form-container button::after,.form-container button .submit-arrow{transition:none}
+    .nav-links a:hover,.nav-cta:hover,.btn-primary:hover,.btn-secondary:hover,.form-container button:hover{transform:none}
   }
 
   @keyframes fadeUp{
@@ -665,7 +700,27 @@
   .duo-card:hover p{color:#C4BCAE;border-color:var(--gold);transform:translateX(4px)}
 
   /* ============ BIO ============ */
-  .bio-section{background:var(--dark-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .bio-section{
+    position:relative;
+    isolation:isolate;
+    overflow:hidden;
+    background:var(--dark-2);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .bio-bg-slideshow{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+  .bio-bg-slide{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 38%;
+    opacity:0;transform:scale(1.035);filter:saturate(0.9);
+    transition:opacity 1.6s ease,transform 8s ease;
+  }
+  .bio-bg-slide.is-active{opacity:0.78;transform:scale(1.08)}
+  .bio-section::before{
+    content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(ellipse at center,rgba(15,13,18,0.66) 0%,rgba(15,13,18,0.43) 56%,rgba(15,13,18,0.16) 100%),
+      linear-gradient(180deg,rgba(15,13,18,0.14),rgba(15,13,18,0.42));
+  }
+  .bio-section > .container{position:relative;z-index:2}
   .bio-content{
     max-width:860px;
     margin:0 auto;
@@ -676,6 +731,7 @@
     line-height:2.1;
     margin-bottom:32px;
     font-weight:300;
+    text-shadow:0 1px 16px rgba(8,6,10,0.52);
   }
   .bio-content p:first-of-type::first-letter{
     font-family:'Fraunces',serif;
@@ -975,31 +1031,41 @@
     width:100%;
     min-height:60px;
     padding:18px 24px;
-    background:var(--gold);
+    background:linear-gradient(135deg,#D8BD7D 0%,var(--gold) 58%,#B9934D 100%);
     color:var(--dark);
-    border:none;
+    border:1px solid rgba(229,198,136,0.72);
+    border-radius:4px;
+    box-shadow:0 10px 30px rgba(201,169,97,0.14);
     font-family:'Inter',sans-serif;
     font-size:0.72rem;
     letter-spacing:2.4px;
     text-transform:uppercase;
     font-weight:600;
     cursor:none;
-    transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+    transition:transform 0.35s,box-shadow 0.35s,border-color 0.35s;
     margin-top:6px;
     position:relative;
     overflow:hidden;
   }
-  .form-container button span{position:relative;z-index:1;display:inline-flex;align-items:center;gap:12px}
+  .form-container button span{position:relative;z-index:2;display:inline-flex;align-items:center;gap:12px}
   .form-container button .submit-arrow{font-size:1rem;transition:transform 0.3s}
   .form-container button::before{
     content:'';position:absolute;inset:0;
     background:var(--gold-bright);
-    transform:scaleX(0);transform-origin:left;
+    transform:scaleX(0);transform-origin:left;z-index:0;
     transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);
   }
-  .form-container button:hover{box-shadow:0 14px 36px rgba(201,169,97,0.2)}
+  .form-container button::after{
+    content:'';position:absolute;z-index:1;top:-35%;left:-65%;width:34%;height:170%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,0.46),transparent);
+    transform:skewX(-22deg);transition:left 0.75s ease;pointer-events:none;
+  }
+  .form-container button:hover{transform:translateY(-3px);box-shadow:0 18px 42px rgba(201,169,97,0.25);border-color:var(--gold-bright)}
   .form-container button:hover::before{transform:scaleX(1)}
+  .form-container button:hover::after{left:140%}
   .form-container button:hover .submit-arrow{transform:translateX(5px)}
+  .form-container button:active{transform:translateY(-1px) scale(0.99)}
+  .form-container button:focus-visible{outline:2px solid var(--gold-bright);outline-offset:5px}
 
   /* DIVIDER */
   .divider{
@@ -1304,7 +1370,7 @@
     display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:36px;
     opacity:0;animation:fadeUp 1.4s cubic-bezier(0.4,0,0.2,1) 2.4s forwards;
   }
-  .hero-social-label{font-size:0.62rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted)}
+  .hero-social-label{font-size:0.68rem;letter-spacing:3.2px;text-transform:uppercase;color:rgba(240,235,224,0.82)}
   .social-footer{justify-content:center;margin:0 auto 36px}
   @media(max-width:900px){
     .social a{cursor:pointer;padding:10px 14px 10px 11px}
@@ -1512,7 +1578,7 @@
         <div class="eyebrow">Agora imagine no seu evento</div>
         <h2>Uma história<br>de <em>irmãos.</em></h2>
         <p>Toda grande dupla sertaneja começa com uma história. A de Júlio César & Danilo começa com um pai compositor, que gostava de tocar violão, e dois meninos que cresceram ao lado dela transformando festas de família em espetáculo.</p>
-        <p>Danilo tinha 15 anos quando venceu seu primeiro concurso musical; Júlio César, aos 9, já fazia aula de canto. Antes de serem uma dupla, os amigos já eram um <em>fenômeno.</em></p>
+        <p>Danilo tinha 15 anos quando venceu seu primeiro concurso musical; Júlio César, aos 9, já fazia aula de canto. Antes de serem uma dupla, os irmãos já eram um <em>fenômeno.</em></p>
       </div>
       <div class="about-visual reveal reveal-delay-1">
         <div class="about-card" id="tiltCard">
@@ -1569,6 +1635,13 @@
 
 <!-- BIOGRAFIA -->
 <section id="biografia" class="bio-section">
+  <div class="bio-bg-slideshow" data-carousel="biografia" data-interval="7000" aria-hidden="true">
+    <img class="bio-bg-slide is-active" src="assets/img/bio-dupla-01.png" alt="" loading="lazy" style="object-position:center 42%">
+    <img class="bio-bg-slide" src="assets/img/bio-dupla-02.jpg" alt="" loading="lazy" style="object-position:center 30%">
+    <img class="bio-bg-slide" src="assets/img/bio-dupla-03.jpg" alt="" loading="lazy" style="object-position:center 34%">
+    <img class="bio-bg-slide" src="assets/img/bio-dupla-04.jpg" alt="" loading="lazy" style="object-position:center 30%">
+    <img class="bio-bg-slide" src="assets/img/bio-dupla-05.jpg" alt="" loading="lazy" style="object-position:center 36%">
+  </div>
   <div class="container">
     <div class="section-header reveal">
       <div class="eyebrow">Biografia</div>
@@ -1577,7 +1650,7 @@
     <div class="bio-content reveal">
       <p>Um nasceu em Coromandel - MG, cidade do famoso "Goiá"; o outro em Uberlândia — e juntos carregam no sangue as duas escolas, da raiz de Tião Carreiro & Pardinho à emoção de Leandro & Leonardo.</p>
       <p>Em dezembro de 2011 veio o primeiro show profissional. Dali em diante, a estrada: bares, restaurantes e festas do interior de Minas — a escola mais exigente que existe, onde o artista aprende a conquistar plateia por plateia, sem cenário e sem desculpa. Foi ali que nasceu a marca registrada da dupla: <em>em 15 anos de carreira, só show bom.</em></p>
-      <p>O talento levou os amigos aos grandes palcos: temporadas nas principais casas de show de Uberlândia, os cruzeiros temáticos de Zezé Di Camargo & Luciano e de Luan Santana, onde cantaram para o público mais exigente que existe, o fã de outro artista — e destaque na imprensa nacional. Hoje, são a escolha de empresas como Danone e JBS para os eventos em que nada pode dar errado, e a atração confirmada há mais de uma década consecutiva no leilão Nelore HRO — porque o cliente que volta todo ano é a maior prova que um artista pode ter.</p>
+      <p>O talento levou os irmãos aos grandes palcos: temporadas nas principais casas de show de Uberlândia, os cruzeiros temáticos de Zezé Di Camargo & Luciano e de Luan Santana, onde cantaram para o público mais exigente que existe, o fã de outro artista — e destaque na imprensa nacional. Hoje, são a escolha de empresas como Danone e JBS para os eventos em que nada pode dar errado, e a atração confirmada há mais de uma década consecutiva no leilão Nelore HRO — porque o cliente que volta todo ano é a maior prova que um artista pode ter.</p>
       <p>Em 2025, a dupla celebrou os 15 anos de estrada com o projeto audiovisual <em>Tome Moda</em>: releituras dos clássicos que marcaram gerações, com arranjos próprios e a assinatura que os define — um show que não acontece para o público, mas com ele.</p>
     </div>
   </div>
@@ -2095,10 +2168,11 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 // ============ RETRATOS DINÂMICOS ============
 const reducePortraitMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 document.querySelectorAll('[data-carousel]').forEach(carousel => {
-  const slides = [...carousel.querySelectorAll('.duo-slide')];
+  const slides = [...carousel.querySelectorAll('.duo-slide, .bio-bg-slide')];
   if (slides.length < 2 || reducePortraitMotion) return;
   let activeSlide = Math.max(0, slides.findIndex(slide => slide.classList.contains('is-active')));
   let carouselTimer = null;
+  const interval = Number(carousel.dataset.interval) || 5000;
   const rotatePortrait = () => {
     slides[activeSlide].classList.remove('is-active');
     activeSlide = (activeSlide + 1) % slides.length;
@@ -2106,7 +2180,7 @@ document.querySelectorAll('[data-carousel]').forEach(carousel => {
   };
   const carouselObserver = new IntersectionObserver(([entry]) => {
     if (entry.isIntersecting && !carouselTimer) {
-      carouselTimer = setInterval(rotatePortrait, 5000);
+      carouselTimer = setInterval(rotatePortrait, interval);
     } else if (!entry.isIntersecting && carouselTimer) {
       clearInterval(carouselTimer);
       carouselTimer = null;
